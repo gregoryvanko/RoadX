@@ -1,7 +1,7 @@
 {
-  "name": "@gregvanko/newapp",
-  "version": "3.3.0",
-  "description": "NewApp",
+  "name": "@gregvanko/roadx",
+  "version": "1.0.0",
+  "description": "RoadX",
   "main": "index.js",
   "scripts": {
     "start": "nodemon --inspect=0.0.0.0:9229 exemple.js",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gregoryvanko/NewApp.git"
+    "url": "git+https://github.com/gregoryvanko/RoadX.git"
   },
   "author": "gregvanko",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gregoryvanko/NewApp/issues"
+    "url": "https://github.com/gregoryvanko/RoadX/issues"
   },
-  "homepage": "https://github.com/gregoryvanko/NewApp#readme",
+  "homepage": "https://github.com/gregoryvanko/RoadX#readme",
   "dependencies": {
     "@gregvanko/nanox": "^1.69.0"
   }
