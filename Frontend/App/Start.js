@@ -23,15 +23,17 @@ class Start {
 
     BuildMenuButton(){
         // Menu bar Translucide
-        NanoXSetMenuBarTranslucide(false)
+        //NanoXSetMenuBarTranslucide(false)
+        // Show name in menu bar
+        //NanoXShowNameInMenuBar(true)
+        // Menu bar on top
+        NanoXSetMenuBarOnTop(false)
         // clear menu button left
         NanoXClearMenuButtonLeft()
         // clear menu button right
         NanoXClearMenuButtonRight()
         // clear menu button setttings
         NanoXClearMenuButtonSettings()
-        // Show name in menu bar
-        NanoXShowNameInMenuBar(true)
     }
 }
 
