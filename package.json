@@ -1,0 +1,28 @@
+{
+  "name": "@gregvanko/newapp",
+  "version": "3.3.0",
+  "description": "NewApp",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect=0.0.0.0:9229 exemple.js",
+    "start:env": "PORT=9999 MONGOURL=mongodb://localhost:27017 nodemon --inspect=0.0.0.0:9229 exemple.js",
+    "up": "npm version minor && npm publish && git push"
+  },
+  "nodemonConfig": {
+    "ext": "css, js",
+    "delay": "5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gregoryvanko/NewApp.git"
+  },
+  "author": "gregvanko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gregoryvanko/NewApp/issues"
+  },
+  "homepage": "https://github.com/gregoryvanko/NewApp#readme",
+  "dependencies": {
+    "@gregvanko/nanox": "^1.69.0"
+  }
+}
