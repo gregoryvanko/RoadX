@@ -15,7 +15,7 @@ class Start {
         // Build Menu Button
         this.BuildMenuButton()
 
-        this._DivApp.innerHTML = "Yes it start"
+        this._DivApp.innerHTML = "Yes it is started"
 
         // Log serveur load module Blog
         NanoXApiPostLog("Load module Start")
