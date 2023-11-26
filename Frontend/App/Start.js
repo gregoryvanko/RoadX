@@ -11,12 +11,12 @@ class Start {
     LoadStartView(){
         // Clear view
         this._DivApp.innerHTML=""
-
         // Build Menu Button
         this.BuildMenuButton()
-
-        this._DivApp.innerHTML = "Yes it is started"
-
+        // Waiting text
+        this._DivApp.appendChild(NanoXBuild.DivText("Loading posts...", null, null, "margin-top:2rem;"))
+        // Get Log
+        // ToDo
         // Log serveur load module Blog
         NanoXApiPostLog("Load module Start")
     }
