@@ -1,0 +1,21 @@
+.ConteneurPost{
+    width: 99%; 
+    margin-top: 1rem;
+    background-color: white;
+    border-radius: 0.4rem;
+    box-shadow: 0.1rem 0.1rem  0.2rem black;
+}
+.ConteneurTitre{
+    margin: 0.4rem;
+}
+.PostTitre {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.ConteneurInfo{
+    margin: 0.4rem 0.4rem 0.4rem 0.8rem;
+}
+.PostInfo {
+    font-size: 0.8rem;
+    color: rgb(109, 109, 120);
+}

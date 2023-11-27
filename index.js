@@ -34,7 +34,8 @@ async function Start({Port = 9000, Name = "RoadX",  Debug = false, SplashScreenF
     // Initiation de NanoX
     require("@gregvanko/nanox").NanoXInitiation(OptionNanoX)
 
-    // Code a jouter pour créer les routes de l’application
+    // Add route Post
+    require("@gregvanko/nanox").NanoXAddRoute("/post", require("./Backend/Route/RoutePost"))
 
     // Start NanoX
     await require("@gregvanko/nanox").NanoXStart()

@@ -1,0 +1,91 @@
+class ViewListOfPost {
+    constructor(){
+        this._DivApp = NanoXGetDivApp()
+        this._ConteneurListOfPost = NanoXBuild.DivFlexColumn("ConteneurListOfPost", null, "width: 100%; max-width: 900px;")
+        this._TextWaiting = NanoXBuild.DivText("Loading Posts...", "textwaiting", null, "margin-top:2rem;")
+
+        this._BlockNumberOfPostToLoad = 0
+        this._NumberOfPostPerBlock = 10
+
+        // Gestion des observer
+        let me = this
+        this._Observer = new IntersectionObserver((entries)=>{
+            entries.forEach(function (obersable){
+                if (obersable.intersectionRatio > 0.5){
+                    me._BlockNumberOfPostToLoad ++
+                    me.GetFilOfPost()
+                    me._Observer.unobserve(obersable.target)
+                }
+            })
+        }, {threshold: [1]})
+    }
+
+    LoadStartView(){
+        // Reste value
+        this._BlockNumberOfPostToLoad = 0
+        // Clear view
+        this._DivApp.innerHTML=""
+        // Build Menu Button
+        this.BuildMenuButton()
+        // Add conteneur
+        this._DivApp.appendChild(this._ConteneurListOfPost)
+        // Waiting text
+        this._DivApp.appendChild(this._TextWaiting)
+        // Get Log
+        this.GetLastPost()
+        // Log serveur load module Blog
+        NanoXApiPostLog("Load view list of posts")
+    }
+
+    BuildMenuButton(){
+        // Menu bar Translucide
+        //NanoXSetMenuBarTranslucide(false)
+        // Show name in menu bar
+        //NanoXShowNameInMenuBar(true)
+        // Menu bar on top
+        NanoXSetMenuBarOnTop(false)
+        // clear menu button left
+        NanoXClearMenuButtonLeft()
+        // clear menu button right
+        NanoXClearMenuButtonRight()
+        // clear menu button setttings
+        NanoXClearMenuButtonSettings()
+    }
+
+    GetLastPost(){
+        // Get File of Psot
+        NanoXApiGet("/post/lastposts/" + this._BlockNumberOfPostToLoad).then((reponse)=>{
+            // Si il y a moins de x posts
+            if(reponse.length < this._NumberOfPostPerBlock){
+                // Add posts without next
+                reponse.forEach(Post => {
+                    // Add Past
+                    this._ConteneurListOfPost.appendChild(ClassPost.Render(Post))
+                });
+                // On supprime le waiting text
+                if (document.getElementById("textwaiting")){
+                    this._TextWaiting.parentNode.removeChild(this._TextWaiting)
+                }
+                this._ConteneurListOfPost.appendChild(NanoXBuild.DivText("All posts are loaded", "nopost", null, "margin-top:2rem; margin-bottom: 2rem;"))
+            } else {
+                let TriggerPoint = reponse.length-1
+                let Currentpoint = 0
+                // Add posts with next
+                reponse.forEach(Post => {
+                    // Add post
+                    const TempPost = ClassPost.Render(Post)
+                    this._ConteneurListOfPost.appendChild(TempPost)
+                    // si l'element est l'element TriggerPoint
+                    if (Currentpoint == TriggerPoint){
+                        // ajouter le listener pour declancher le GetPosts
+                        this._Observer.observe(TempPost)
+                    }
+                    // Increment Currentpoint
+                    Currentpoint ++
+                });
+            }
+        },(erreur)=>{
+            this._DivApp.innerHTML = erreur
+        })
+    }
+}
