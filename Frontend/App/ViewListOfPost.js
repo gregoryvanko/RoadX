@@ -20,14 +20,18 @@ class ViewListOfPost {
         }, {threshold: [1]})
     }
 
+    /**
+     * Load start view
+     */
     LoadStartView(){
         // Reste value
         this._BlockNumberOfPostToLoad = 0
         // Clear view
         this._DivApp.innerHTML=""
+        this._ConteneurListOfPost.innerHTML = ""
         // Build Menu Button
         this.BuildMenuButton()
-        // Add conteneur
+        // Add conteneur list of post
         this._DivApp.appendChild(this._ConteneurListOfPost)
         // Waiting text
         this._DivApp.appendChild(this._TextWaiting)
@@ -37,21 +41,30 @@ class ViewListOfPost {
         NanoXApiPostLog("Load view list of posts")
     }
 
+    /**
+     * Build button menu
+     */
     BuildMenuButton(){
         // Menu bar Translucide
-        //NanoXSetMenuBarTranslucide(false)
+        NanoXSetMenuBarTranslucide(false)
         // Show name in menu bar
-        //NanoXShowNameInMenuBar(true)
+        NanoXShowNameInMenuBar(true)
         // Menu bar on top
-        NanoXSetMenuBarOnTop(false)
+        //NanoXSetMenuBarOnTop(false)
         // clear menu button left
         NanoXClearMenuButtonLeft()
         // clear menu button right
         NanoXClearMenuButtonRight()
         // clear menu button setttings
         NanoXClearMenuButtonSettings()
+
+        // Button Add track
+        NanoXAddMenuButtonRight("ButtonAddTrack", "Add Track", IconModule.Add(NanoXGetColorIconMenuBar()), this.LoadAddView.bind(this))
     }
 
+    /**
+     * Get Last post
+     */
     GetLastPost(){
         // Get File of Psot
         NanoXApiGet("/post/lastposts/" + this._BlockNumberOfPostToLoad).then((reponse)=>{
@@ -87,5 +100,13 @@ class ViewListOfPost {
         },(erreur)=>{
             this._DivApp.innerHTML = erreur
         })
+    }
+
+    /**
+     * Load de la vue add track
+     */
+    LoadAddView(){
+        const view = new ViewAddPostChoice(this.LoadStartView.bind(this))
+        view.LoadView()
     }
 }
