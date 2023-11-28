@@ -23,7 +23,7 @@ class ViewAddPostChoice {
         DivBoxFichier.onclick = this.ClickOnAddFile.bind(this)
         Conteneur.appendChild(DivBoxFichier)
         const DivImageAddFile = NanoXBuild.DivFlexColumn(null, null, "width: 18%; height: 12vh;")
-        // ToDo Add Icon
+        DivImageAddFile.innerHTML = IconModule.AddFileMonitor()
         DivBoxFichier.appendChild(DivImageAddFile)
         DivBoxFichier.appendChild(NanoXBuild.DivText("Sélectionner le fichier GPS contenant l'itinéraire", null, "Text", "width: 80%;"))
         // Boxconstructeur de track
