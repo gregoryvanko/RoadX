@@ -31,7 +31,7 @@ class ViewAddPostChoice {
         DivBoxConstruire.onclick = this.ClickOnConstructTrack.bind(this)
         Conteneur.appendChild(DivBoxConstruire)
         const DivImageCreate = NanoXBuild.DivFlexColumn(null, null, "width: 18%; height: 12vh;")
-        // ToDo Add Icon
+        DivImageCreate.innerHTML = IconModule.CreateFileMonitor()
         DivBoxConstruire.appendChild(DivImageCreate)
         DivBoxConstruire.appendChild(NanoXBuild.DivText("Dessiner votre parcours manuellement", null, "Text", "width: 80%;"))
 
@@ -61,8 +61,8 @@ class ViewAddPostChoice {
     }
 
     ClickOnAddFile(){
-        alert("Add File")
-        // ToDo
+        const view = new ViewAddPostFile(this._GoBackView)
+        view.LoadView()
     }
 
     ClickOnConstructTrack(){
