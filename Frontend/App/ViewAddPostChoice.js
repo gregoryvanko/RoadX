@@ -19,7 +19,7 @@ class ViewAddPostChoice {
         // Add titre
         Conteneur.appendChild(NanoXBuild.DivText("Publier un itinéraire", null, "Titre"))
         // Box add fichier
-        const DivBoxFichier = NanoXBuild.DivFlexRowSpaceBetween(null, "ConteneurButton", null)
+        const DivBoxFichier = NanoXBuild.DivFlexRowSpaceBetween(null, "ConteneurBox ConteneurButton", null)
         DivBoxFichier.onclick = this.ClickOnAddFile.bind(this)
         Conteneur.appendChild(DivBoxFichier)
         const DivImageAddFile = NanoXBuild.DivFlexColumn(null, null, "width: 18%; height: 12vh;")
@@ -27,7 +27,7 @@ class ViewAddPostChoice {
         DivBoxFichier.appendChild(DivImageAddFile)
         DivBoxFichier.appendChild(NanoXBuild.DivText("Sélectionner le fichier GPS contenant l'itinéraire", null, "Text", "width: 80%;"))
         // Boxconstructeur de track
-        const DivBoxConstruire = NanoXBuild.DivFlexRowSpaceBetween(null, "ConteneurButton", null)
+        const DivBoxConstruire = NanoXBuild.DivFlexRowSpaceBetween(null, "ConteneurBox ConteneurButton", null)
         DivBoxConstruire.onclick = this.ClickOnConstructTrack.bind(this)
         Conteneur.appendChild(DivBoxConstruire)
         const DivImageCreate = NanoXBuild.DivFlexColumn(null, null, "width: 18%; height: 12vh;")

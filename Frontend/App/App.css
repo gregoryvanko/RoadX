@@ -1,3 +1,7 @@
+.leaflet-retina .leaflet-control-layers-toggle {
+    background-image: url("https://unpkg.com/leaflet@1.7.1/dist/images/layers-2x.png");
+}
+
 html{
     max-width: 100%;
     overflow-x: hidden;
@@ -31,18 +35,20 @@ body{
     word-wrap: break-word;
 }
 
-.ConteneurButton{
+.ConteneurBox{
     padding: 0.4rem;
     max-width: 700px;
     width: 98%; 
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+.ConteneurButton{
     background-color: white;
     border-radius: 0.4rem;
     box-shadow: 0.1rem 0.1rem  0.2rem black;
     cursor: pointer;
 }
-
 
 .ConteneurPost{
     width: 99%; 
@@ -145,6 +151,11 @@ body{
     margin: 1vh 0vh 1vh 0vh;
     min-width: 30%;
     padding: 1vh;
+}
+
+.DivMapAddTrack{
+    width: 98%;
+    max-width: 700px;
 }
 
 
