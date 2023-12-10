@@ -48,47 +48,45 @@ class ViewAddPostFile {
         this._DivApp.appendChild(Conteneur)
         // Add titre
         Conteneur.appendChild(NanoXBuild.DivText("Ajouter un fichier GPX", null, "Titre"))
-        // Input Name
-        Conteneur.appendChild(this.BuildEmptySpace("1rem"))
-        Conteneur.appendChild(NanoXBuild.InputWithLabel("InputBox", "Name:", "Text", "InputTrackName","", "Input Text", "text", this._TraceName, null, true))
-        // Description
-        Conteneur.appendChild(this.BuildEmptySpace("1rem"))
-        let DivDescription = NanoXBuild.Div(null, "InputBox Text")
-        Conteneur.appendChild(DivDescription)
-        DivDescription.appendChild(NanoXBuild.DivText("Description", null, "Text", ""))
-        let DivContDesc = NanoXBuild.Div("DivContDesc", "DivContentEdit")
-        DivContDesc.innerText = this._TraceDescription
-        DivContDesc.contentEditable = "True"
-        DivContDesc.style.fontSize = "1rem"
-        DivDescription.appendChild(DivContDesc)
-        // Date
-        Conteneur.appendChild(this.BuildEmptySpace("1rem"))
-        let divDate = NanoXBuild.Div(null, "InputBox", "display: -webkit-flex; display: flex; flex-direction: row; justify-content:start; align-content:center; align-items: center; flex-wrap: wrap;")
-        Conteneur.appendChild(divDate)
-        let TextDate = NanoXBuild.DivText("Date:", null, "Text", "margin-right: 1rem;")
-        divDate.appendChild(TextDate)
-        let InputDate = NanoXBuild.Input(this._TraceDate, "text", "InputDate", "", "InputDate", "Input Text", "width: 50%; text-align: right;")
-        InputDate.setAttribute("inputmode","none")
-        divDate.appendChild(InputDate)
-        // https://mymth.github.io/vanillajs-datepicker
-        const datepicker = new Datepicker(InputDate, {
-            autohide : true,
-            format : "dd/mm/yyyy",
-            language : "fr",
-            todayHighlight : true,
-            updateOnBlur : false
-        });
         // Convert GPX to map
         let MyGpxToGeoJson = new GpxToGeoJson(GPX)
         let ReponseGpxToGeoJson = MyGpxToGeoJson.Convert()
         if (ReponseGpxToGeoJson.Error){
-            // Clear view
-            this._DivApp.innerHTML=""
             // Show message
             this.ShowErrorMessage(ReponseGpxToGeoJson.ErrorMsg)
         } else {
             // Save GeoJson
             this._TraceGeoJson = ReponseGpxToGeoJson.GeoJson
+            // Input Name
+            Conteneur.appendChild(this.BuildEmptySpace("1rem"))
+            Conteneur.appendChild(NanoXBuild.InputWithLabel("InputBox", "Name:", "Text", "InputTrackName","", "Input Text", "text", this._TraceName, null, true))
+            // Description
+            Conteneur.appendChild(this.BuildEmptySpace("1rem"))
+            let DivDescription = NanoXBuild.Div(null, "InputBox Text")
+            Conteneur.appendChild(DivDescription)
+            DivDescription.appendChild(NanoXBuild.DivText("Description", null, "Text", ""))
+            let DivContDesc = NanoXBuild.Div("DivContDesc", "DivContentEdit")
+            DivContDesc.innerText = this._TraceDescription
+            DivContDesc.contentEditable = "True"
+            DivContDesc.style.fontSize = "1rem"
+            DivDescription.appendChild(DivContDesc)
+            // Date
+            Conteneur.appendChild(this.BuildEmptySpace("1rem"))
+            let divDate = NanoXBuild.Div(null, "InputBox", "display: -webkit-flex; display: flex; flex-direction: row; justify-content:start; align-content:center; align-items: center; flex-wrap: wrap;")
+            Conteneur.appendChild(divDate)
+            let TextDate = NanoXBuild.DivText("Date:", null, "Text", "margin-right: 1rem;")
+            divDate.appendChild(TextDate)
+            let InputDate = NanoXBuild.Input(this._TraceDate, "text", "InputDate", "", "InputDate", "Input Text", "width: 40%; text-align: right;")
+            InputDate.setAttribute("inputmode","none")
+            divDate.appendChild(InputDate)
+            // https://mymth.github.io/vanillajs-datepicker
+            const datepicker = new Datepicker(InputDate, {
+                autohide : true,
+                format : "dd/mm/yyyy",
+                language : "fr",
+                todayHighlight : true,
+                updateOnBlur : false
+            });
             // Add Div image
             Conteneur.appendChild(this.BuildEmptySpace("1rem"))
             const DivMapAddTrack = NanoXBuild.Div("", "InputBox")
@@ -109,8 +107,10 @@ class ViewAddPostFile {
         let Content = NanoXBuild.DivFlexColumn(null, null, "width: 100%;")
         // Empty space
         Content.appendChild(this.BuildEmptySpace())
-        // Texte waiting
-        Content.appendChild(NanoXBuild.DivText(Error, null, "Text", "color:red;"))
+        // Texte
+        let text = NanoXBuild.DivText("", null, "Text", "color:red;")
+        text.innerHTML = Error
+        Content.appendChild(text)
         // Empty space
         Content.appendChild(this.BuildEmptySpace())
         // Show window
@@ -132,8 +132,20 @@ class ViewAddPostFile {
             // Convert div to image base64
             this._TraceImageBase64 = await domtoimage.toPng(document.getElementById(this._IdMapToImg))
             // Send data to server
-            // ToDo
-            this._DivApp.innerHTML= `<img src="${this._TraceImageBase64}" alt="Red dot" />`
+            const DataToSend= {
+                "Name": this._TraceName,
+                "Description" : this._TraceDescription,
+                "Date" : this._TraceDate,
+                "ImageBase64": this._TraceImageBase64,
+                "GeoJson" : this._TraceGeoJson
+            }
+            NanoXApiPost("/post", DataToSend).then((reponse)=>{
+                this._GoBackView()
+            },(erreur)=>{
+                // Show error
+                this.ShowErrorMessage(erreur)
+            })
+
         } else {
             this.ShowErrorMessage("Enter a name before selecting your file")
         }
