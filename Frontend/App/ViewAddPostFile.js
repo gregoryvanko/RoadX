@@ -8,8 +8,8 @@ class ViewAddPostFile {
         this._TraceName = "Titre"
         this._TraceDescription = ""
         this._TraceDate = new Date().toLocaleDateString("fr")
-        this._TraceColor = "#0000FF"
         this._TraceImageBase64 = null
+        this._TraceGeoJson = null
     }
 
     GetGPXFile(){
@@ -41,7 +41,6 @@ class ViewAddPostFile {
     }
 
     LoadView(GPX){
-        
         // Clear view
         this._DivApp.innerHTML=""
         // Contener
@@ -79,35 +78,26 @@ class ViewAddPostFile {
             todayHighlight : true,
             updateOnBlur : false
         });
-        // Add Div image
-        Conteneur.appendChild(this.BuildEmptySpace("1rem"))
-        const DivMapAddTrack = NanoXBuild.Div(this._IdMapToImg, "InputBox")
-        Conteneur.appendChild(DivMapAddTrack)
-        // Color
-        Conteneur.appendChild(this.BuildEmptySpace("1rem"))
-        let divColor = NanoXBuild.Div(null, "InputBox", "display: -webkit-flex; display: flex; flex-direction: row; justify-content:start; align-content:center; align-items: center; flex-wrap: wrap;")
-        let TextColor = NanoXBuild.DivText("Color:", null, "Text", "margin-right: 1rem;")
-        divColor.appendChild(TextColor)
-        let inputcolor = document.createElement("input")
-        divColor.appendChild(inputcolor)
-        inputcolor.setAttribute("id","SelectColor")
-        inputcolor.setAttribute("type","color")
-        inputcolor.setAttribute("style","background-color: white;border-radius: 8px; cursor: pointer; height: 2rem; border: 1px solid black; padding: 0.1rem;")
-        inputcolor.value = this._TraceColor
-        inputcolor.addEventListener("change", ()=>{
-            this._TraceColor = document.getElementById("SelectColor").value
-            MyGpxToMap.ChangeTrackColor(this._TraceColor)
-        }, false)
-        Conteneur.appendChild(divColor)
         // Convert GPX to map
-        let MyGpxToMap = new GpxToMap(GPX, DivMapAddTrack, this._TraceColor)
-        let ReponseGpxToImg = MyGpxToMap.Convert()
-        if (ReponseGpxToImg.Error){
+        let MyGpxToGeoJson = new GpxToGeoJson(GPX)
+        let ReponseGpxToGeoJson = MyGpxToGeoJson.Convert()
+        if (ReponseGpxToGeoJson.Error){
             // Clear view
             this._DivApp.innerHTML=""
             // Show message
-            this.ShowErrorMessage(ReponseGpxToImg.ErrorMsg)
+            this.ShowErrorMessage(ReponseGpxToGeoJson.ErrorMsg)
         } else {
+            // Save GeoJson
+            this._TraceGeoJson = ReponseGpxToGeoJson.GeoJson
+            // Add Div image
+            Conteneur.appendChild(this.BuildEmptySpace("1rem"))
+            const DivMapAddTrack = NanoXBuild.Div("", "InputBox")
+            Conteneur.appendChild(DivMapAddTrack)
+            DivMapAddTrack.appendChild(NanoXBuild.Div(this._IdMapToImg, null, `width: 100%; padding-top: 56.25%;`))
+            // Build Map
+            let Map = new GeoXMap(this._IdMapToImg)
+            Map.RenderMap(false, false)
+            Map.AddTrackOnMap("TraclToImg", this._TraceGeoJson, true, "#0000FF")
             // Add save boutton
             const DivBoxButton = NanoXBuild.DivFlexRowSpaceAround(null, "ConteneurBox", null)
             Conteneur.appendChild(DivBoxButton)
@@ -139,12 +129,11 @@ class ViewAddPostFile {
             this._TraceName = document.getElementById("InputTrackName").value
             this._TraceDescription = document.getElementById("DivContDesc").innerText
             this._TraceDate = document.getElementById("InputDate").value
-            this._TraceColor = document.getElementById("SelectColor").value
             // Convert div to image base64
             this._TraceImageBase64 = await domtoimage.toPng(document.getElementById(this._IdMapToImg))
             // Send data to server
+            // ToDo
             this._DivApp.innerHTML= `<img src="${this._TraceImageBase64}" alt="Red dot" />`
-            //this.SendAddTrack(GPX, ReponseGpxToImg.Img, ReponseGpxToImg.GeoJson) //ToDo
         } else {
             this.ShowErrorMessage("Enter a name before selecting your file")
         }
