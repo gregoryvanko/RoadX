@@ -74,7 +74,6 @@ body{
 
 .InputBox{
     width: 40%;
-    margin-top: 2rem;
 }
 
 .Input {
@@ -123,8 +122,8 @@ body{
 }
 
 .Button{
-    margin: 4vh 0vh 1vh 0vh;
-    padding: 2vh 2vh 2vh 2vh;
+    margin: 1rem 0rem 1rem 0rem;
+    padding: 0.5rem;
     cursor: pointer;
     border: 1px solid var(--NanoX-appcolor);
     border-radius: 20px;
@@ -148,14 +147,7 @@ body{
 }
 
 .ButtonWidth30{
-    margin: 1vh 0vh 1vh 0vh;
     min-width: 30%;
-    padding: 1vh;
-}
-
-.DivMapAddTrack{
-    width: 98%;
-    max-width: 700px;
 }
 
 

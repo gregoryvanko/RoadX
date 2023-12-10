@@ -62,7 +62,7 @@ class ViewAddPostChoice {
 
     ClickOnAddFile(){
         const view = new ViewAddPostFile(this._GoBackView)
-        view.LoadView()
+        view.GetGPXFile()
     }
 
     ClickOnConstructTrack(){

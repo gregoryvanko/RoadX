@@ -1,10 +1,13 @@
 class GpxToMap {
     
-    constructor(Gpx=null, Div=null , MapId="MyMAp"){
+    constructor(Gpx=null, Div=null, TraceColor = "#0000FF"){
         this._Div = Div
         this._Gpx = Gpx
+        this._TraceColor = TraceColor
+
         this._GeoJson = null
-        this._MapId = MapId
+        this._MapId = "GPXMap"
+        this._layerTrack1 = null
     }
 
     Convert(){
@@ -48,10 +51,10 @@ class GpxToMap {
         let MyMap = L.map(this._MapId , {attributionControl: false, fadeAnimation: false, zoomAnimation: false, zoomControl: false, tapTolerance:40, tap:false, layers: [Openstreetmap]}).setView([CenterPoint.Lat, CenterPoint.Long], Zoom);
         let WeightTrack = (L.Browser.mobile) ? 5 : 3
         var TrackStyle = {
-            "color": "blue",
+            "color": this._TraceColor,
             "weight": WeightTrack
         };
-        var layerTrack1=L.geoJSON(this._GeoJson , 
+        this._layerTrack1=L.geoJSON(this._GeoJson , 
             {
                 style: TrackStyle, 
                 filter: function(feature, layer) {if (feature.geometry.type == "LineString") return true}, 
@@ -76,6 +79,12 @@ class GpxToMap {
         const MarkerStart = new L.marker([beg[1],beg[0]], {icon: IconPointStartOption}).addTo(MyMap)
         const MarkerEnd = new L.marker([end[1],end[0]], {icon: IconPointEndOption}).addTo(MyMap)
         // FitBound
-        MyMap.fitBounds(layerTrack1.getBounds(), {padding: [50,50]});
+        MyMap.fitBounds(this._layerTrack1.getBounds(), {padding: [50,50]});
+    }
+
+    ChangeTrackColor(Color){
+        if (this._layerTrack1){
+            this._layerTrack1.setStyle({"color": Color});
+        }
     }
 }
