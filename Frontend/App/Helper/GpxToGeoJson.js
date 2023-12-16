@@ -6,7 +6,7 @@ class GpxToGeoJson {
     }
 
     Convert(){
-        let ConvertReponse = {Error: true, ErrorMsg: "GpxToGeoJson : InitError", GeoJson: null}
+        let ConvertReponse = {Error: true, ErrorMsg: "GpxToGeoJson : InitError", GeoJson: null, TrackName: null, TrackDescription: null, TrackDate: null}
         let parser = new DOMParser();
         let xmlDoc = parser.parseFromString(this._Gpx,"text/xml");
         this._GeoJson = toGeoJSON.gpx(xmlDoc)
@@ -30,6 +30,9 @@ class GpxToGeoJson {
             ConvertReponse.Error = false
             ConvertReponse.ErrorMsg = null
             ConvertReponse.GeoJson = this._GeoJson
+            ConvertReponse.TrackName = (this._GeoJson.features[0].properties.name) ? this._GeoJson.features[0].properties.name : null
+            ConvertReponse.TrackDescription = (this._GeoJson.features[0].properties.desc) ? this._GeoJson.features[0].properties.desc : null
+            ConvertReponse.TrackDate = (this._GeoJson.features[0].properties.time) ? this._GeoJson.features[0].properties.time : null
         } else {
             ConvertReponse.ErrorMsg = "GpxToGeoJson : GeoJson not converted from gpx"
         }

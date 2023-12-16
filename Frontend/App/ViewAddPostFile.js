@@ -7,7 +7,9 @@ class ViewAddPostFile {
 
         this._TraceName = "Titre"
         this._TraceDescription = ""
-        this._TraceDate = new Date().toLocaleDateString("fr")
+        //this._TraceDate = new Date().toLocaleDateString("fr")
+        this._TraceDate = new Date()
+        this._Time = new Date()
         this._TraceImageBase64 = null
         this._TraceGeoJson = null
     }
@@ -55,11 +57,15 @@ class ViewAddPostFile {
             // Show message
             this.ShowErrorMessage(ReponseGpxToGeoJson.ErrorMsg)
         } else {
+            // Get track info
+            this._TraceName = ReponseGpxToGeoJson.TrackName
+            this._TraceDescription = ReponseGpxToGeoJson.TrackDescription
+            this._TraceDate = new Date(ReponseGpxToGeoJson.TrackDate)
             // Save GeoJson
             this._TraceGeoJson = ReponseGpxToGeoJson.GeoJson
             // Input Name
             Conteneur.appendChild(this.BuildEmptySpace("1rem"))
-            Conteneur.appendChild(NanoXBuild.InputWithLabel("InputBox", "Name:", "Text", "InputTrackName","", "Input Text", "text", this._TraceName, null, true))
+            Conteneur.appendChild(NanoXBuild.InputWithLabel("InputBox", "Name:", "Text", "InputTrackName",this._TraceName, "Input Text", "text", "Name", null, true))
             // Description
             Conteneur.appendChild(this.BuildEmptySpace("1rem"))
             let DivDescription = NanoXBuild.Div(null, "InputBox Text")
@@ -76,7 +82,7 @@ class ViewAddPostFile {
             Conteneur.appendChild(divDate)
             let TextDate = NanoXBuild.DivText("Date:", null, "Text", "margin-right: 1rem;")
             divDate.appendChild(TextDate)
-            let InputDate = NanoXBuild.Input(this._TraceDate, "text", "InputDate", "", "InputDate", "Input Text", "width: 40%; text-align: right;")
+            let InputDate = NanoXBuild.Input(this._TraceDate.toLocaleDateString("fr"), "text", "InputDate", "", "InputDate", "Input Text", "width: 40%; text-align: right;")
             InputDate.setAttribute("inputmode","none")
             divDate.appendChild(InputDate)
             // https://mymth.github.io/vanillajs-datepicker
@@ -128,7 +134,8 @@ class ViewAddPostFile {
             // Save Data
             this._TraceName = document.getElementById("InputTrackName").value
             this._TraceDescription = document.getElementById("DivContDesc").innerText
-            this._TraceDate = document.getElementById("InputDate").value
+            let dateParts = document.getElementById("InputDate").value.split("/");
+            this._TraceDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0],this._Time.getHours(), this._Time.getMinutes(), this._Time.getSeconds());
             // Convert div to image base64
             this._TraceImageBase64 = await domtoimage.toPng(document.getElementById(this._IdMapToImg))
             // Send data to server
