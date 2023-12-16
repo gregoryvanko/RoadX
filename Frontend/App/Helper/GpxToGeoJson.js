@@ -32,7 +32,7 @@ class GpxToGeoJson {
             ConvertReponse.GeoJson = this._GeoJson
             ConvertReponse.TrackName = (this._GeoJson.features[0].properties.name) ? this._GeoJson.features[0].properties.name : null
             ConvertReponse.TrackDescription = (this._GeoJson.features[0].properties.desc) ? this._GeoJson.features[0].properties.desc : null
-            ConvertReponse.TrackDate = (this._GeoJson.features[0].properties.time) ? this._GeoJson.features[0].properties.time : null
+            ConvertReponse.TrackDate = (this._GeoJson.features[0].properties.time) ? this._GeoJson.features[0].properties.time : Date.now()
         } else {
             ConvertReponse.ErrorMsg = "GpxToGeoJson : GeoJson not converted from gpx"
         }

@@ -7,9 +7,8 @@ class ViewAddPostFile {
 
         this._TraceName = "Titre"
         this._TraceDescription = ""
-        //this._TraceDate = new Date().toLocaleDateString("fr")
-        this._TraceDate = new Date()
-        this._Time = new Date()
+        this._TraceDate = new Date(Date.now())
+        this._Time = Date.now()
         this._TraceImageBase64 = null
         this._TraceGeoJson = null
     }
@@ -60,7 +59,9 @@ class ViewAddPostFile {
             // Get track info
             this._TraceName = ReponseGpxToGeoJson.TrackName
             this._TraceDescription = ReponseGpxToGeoJson.TrackDescription
+            console.log(this._TraceDate)
             this._TraceDate = new Date(ReponseGpxToGeoJson.TrackDate)
+            console.log(this._TraceDate)
             // Save GeoJson
             this._TraceGeoJson = ReponseGpxToGeoJson.GeoJson
             // Input Name
