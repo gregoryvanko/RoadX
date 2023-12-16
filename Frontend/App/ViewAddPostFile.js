@@ -59,9 +59,7 @@ class ViewAddPostFile {
             // Get track info
             this._TraceName = ReponseGpxToGeoJson.TrackName
             this._TraceDescription = ReponseGpxToGeoJson.TrackDescription
-            console.log(this._TraceDate)
             this._TraceDate = new Date(ReponseGpxToGeoJson.TrackDate)
-            console.log(this._TraceDate)
             // Save GeoJson
             this._TraceGeoJson = ReponseGpxToGeoJson.GeoJson
             // Input Name
