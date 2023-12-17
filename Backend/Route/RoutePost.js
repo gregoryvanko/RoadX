@@ -4,7 +4,7 @@ const LogStatApi = require("@gregvanko/nanox").NanoXLogStatApi
 const LogError = require("@gregvanko/nanox").NanoXLogError
 
 const GetBlockOfPosts = require("./HelperPost").GetBlockOfPosts
-const AddPost = require("./HelperPost").AddPost
+const AddModifyPost = require("./HelperPost").AddModifyPost
 
 // Get Last post by block
 router.get("/lastposts/:BlockNumberOfPostToLoad", AuthBasic, (req, res) => {
@@ -15,10 +15,10 @@ router.get("/lastposts/:BlockNumberOfPostToLoad", AuthBasic, (req, res) => {
 })
 
 // Add one post
-router.post("/", AuthBasic, async (req, res) => {
+router.post("/add", AuthBasic, async (req, res) => {
     const TrackPost = req.body
     if (JSON.stringify(TrackPost) != "{}"){
-        AddPost(TrackPost, res, req.user)
+        AddModifyPost(TrackPost, res, req.user)
     } else {
         const TheError = `Route /post POST error: Data not found in req`
         res.status(500).send(TheError)

@@ -29,7 +29,7 @@ body{
 }
 /* Input */
 .InputBox{
-    width: 40%;
+    width: 50%;
 }
 .Input {
     box-sizing: border-box;
@@ -100,7 +100,7 @@ body{
     border-radius: 5px;
     padding: 2%;
     color: #666;
-    min-height: 8rem;
+    min-height: 6rem;
     -webkit-user-select: text;
     user-select: text;
 }

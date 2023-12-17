@@ -8,7 +8,7 @@ class ViewAddPostFile {
         this._TraceName = "Titre"
         this._TraceDescription = ""
         this._TraceDate = new Date(Date.now())
-        this._Time = Date.now()
+        this._Time = new Date(Date.now())
         this._TraceImageBase64 = null
         this._TraceGeoJson = null
     }
@@ -96,7 +96,7 @@ class ViewAddPostFile {
             Conteneur.appendChild(this.BuildEmptySpace("1rem"))
             const DivMapAddTrack = NanoXBuild.Div("", "InputBox")
             Conteneur.appendChild(DivMapAddTrack)
-            DivMapAddTrack.appendChild(NanoXBuild.Div(this._IdMapToImg, null, `width: 100%; padding-top: 56.25%;`))
+            DivMapAddTrack.appendChild(NanoXBuild.Div(this._IdMapToImg, null, `width: 100%; aspect-ratio: 16 / 9;`))
             // Build Map
             let Map = new GeoXMap(this._IdMapToImg)
             Map.RenderMap(false, false)
@@ -130,26 +130,33 @@ class ViewAddPostFile {
 
     async ClickSave(){
         if (document.getElementById("InputTrackName").value != ""){
+            // Set text of button to waiting
+            document.getElementById("Save").innerHTML="Build..."
+            document.getElementById("Save").disabled = true
             // Save Data
             this._TraceName = document.getElementById("InputTrackName").value
             this._TraceDescription = document.getElementById("DivContDesc").innerText
             let dateParts = document.getElementById("InputDate").value.split("/");
             this._TraceDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0],this._Time.getHours(), this._Time.getMinutes(), this._Time.getSeconds());
             // Convert div to image base64
-            this._TraceImageBase64 = await domtoimage.toPng(document.getElementById(this._IdMapToImg))
+            this._TraceImageBase64 = await domtoimage.toPng(document.getElementById(this._IdMapToImg), {width: document.getElementById(this._IdMapToImg).clientWidth, height: document.getElementById(this._IdMapToImg).clientHeight})
             // Send data to server
             const DataToSend= {
+                "Id": null,
                 "Name": this._TraceName,
                 "Description" : this._TraceDescription,
                 "Date" : this._TraceDate,
                 "ImageBase64": this._TraceImageBase64,
                 "GeoJson" : this._TraceGeoJson
             }
-            NanoXApiPost("/post", DataToSend).then((reponse)=>{
+            NanoXApiPost("/post/add", DataToSend).then((reponse)=>{
                 this._GoBackView()
             },(erreur)=>{
                 // Show error
                 this.ShowErrorMessage(erreur)
+                // Set text of button to waiting
+                document.getElementById("Save").innerHTML="Save"
+                document.getElementById("Save").disabled = false
             })
 
         } else {

@@ -1,7 +1,7 @@
 class ViewListOfPost {
     constructor(){
         this._DivApp = NanoXGetDivApp()
-        this._ConteneurListOfPost = NanoXBuild.DivFlexColumn("ConteneurListOfPost", null, "width: 100%; max-width: 900px;")
+        this._ConteneurListOfPost = NanoXBuild.DivFlexColumn("ConteneurListOfPost", "ConteneurListOfPost", null)
         this._TextWaiting = NanoXBuild.DivText("Loading Posts...", "textwaiting", null, "margin-top:2rem;")
 
         this._BlockNumberOfPostToLoad = 0
