@@ -59,7 +59,7 @@ class ViewListOfPost {
         NanoXClearMenuButtonSettings()
 
         // Button Add track
-        NanoXAddMenuButtonRight("ButtonAddTrack", "Add Track", IconModule.Add(NanoXGetColorIconMenuBar()), this.LoadAddView.bind(this))
+        NanoXAddMenuButtonRight("ButtonAddTrack", "Add Track", IconModule.AddPost(NanoXGetColorIconMenuBar()), this.LoadAddView.bind(this))
     }
 
     /**
