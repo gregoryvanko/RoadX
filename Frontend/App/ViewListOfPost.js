@@ -30,7 +30,9 @@ class ViewListOfPost {
         this._DivApp.innerHTML=""
         this._ConteneurListOfPost.innerHTML = ""
         // Build Menu Button
-        this.BuildMenuButton()
+        this.BuildMenuBar()
+        // Add titre
+        this._DivApp.appendChild(NanoXBuild.DivText("RoadX", null, "Titre"))
         // Add conteneur list of post
         this._DivApp.appendChild(this._ConteneurListOfPost)
         // Waiting text
@@ -44,13 +46,14 @@ class ViewListOfPost {
     /**
      * Build button menu
      */
-    BuildMenuButton(){
-        // Menu bar Translucide
-        NanoXSetMenuBarTranslucide(false)
-        // Show name in menu bar
-        NanoXShowNameInMenuBar(true)
+    BuildMenuBar(){
         // Menu bar on top
-        //NanoXSetMenuBarOnTop(false)
+        NanoXSetMenuBarOnTop(false)
+        // Menu bar Translucide
+        NanoXSetMenuBarTranslucide(true)
+        // Show name in menu bar
+        NanoXShowNameInMenuBar(false)
+        
         // clear menu button left
         NanoXClearMenuButtonLeft()
         // clear menu button right
@@ -59,7 +62,7 @@ class ViewListOfPost {
         NanoXClearMenuButtonSettings()
 
         // Button Add track
-        NanoXAddMenuButtonRight("ButtonAddTrack", "Add Track", IconModule.AddPost(NanoXGetColorIconMenuBar()), this.LoadAddView.bind(this))
+        NanoXAddMenuButtonSettings("ButtonAddTrack", "Add Track", IconModule.AddPost(NanoXGetColorIconMenuBar()), this.LoadAddView.bind(this))
     }
 
     /**

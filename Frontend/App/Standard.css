@@ -8,11 +8,12 @@ body{
 }
 /* Titre */
 .Titre{
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    font-size: 2rem;
+    margin-top: 0.4rem;
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
     color: var(--NanoX-appcolor);
     word-wrap: break-word;
+    font-weight: bold;
 }
 /* Sous Titre */
 .SousTitre{
@@ -25,6 +26,10 @@ body{
 }
 .TextSmall{
     font-size: 0.8rem;
+    word-wrap: break-word;
+}
+.TextSmallSmall{
+    font-size: 0.6rem;
     word-wrap: break-word;
 }
 /* Input */

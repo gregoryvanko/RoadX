@@ -17,7 +17,7 @@ class ViewAddPostChoice {
         const Conteneur = NanoXBuild.DivFlexColumn("Conteneur", null, "width: 100%;")
         this._DivApp.appendChild(Conteneur)
         // Add titre
-        Conteneur.appendChild(NanoXBuild.DivText("Publier un itinéraire", null, "Titre"))
+        Conteneur.appendChild(NanoXBuild.DivText("Publier une route", null, "Titre"))
         // Box add fichier
         const DivBoxFichier = NanoXBuild.DivFlexRowSpaceBetween(null, "ConteneurBox ConteneurButton", null)
         DivBoxFichier.onclick = this.ClickOnAddFile.bind(this)
@@ -25,7 +25,7 @@ class ViewAddPostChoice {
         const DivImageAddFile = NanoXBuild.DivFlexColumn(null, null, "width: 18%; height: 12vh;")
         DivImageAddFile.innerHTML = IconModule.AddFileMonitor()
         DivBoxFichier.appendChild(DivImageAddFile)
-        DivBoxFichier.appendChild(NanoXBuild.DivText("Sélectionner le fichier GPS contenant l'itinéraire", null, "Text", "width: 80%;"))
+        DivBoxFichier.appendChild(NanoXBuild.DivText("Sélectionner le fichier GPS contenant la route", null, "Text", "width: 80%;"))
         // Boxconstructeur de track
         const DivBoxConstruire = NanoXBuild.DivFlexRowSpaceBetween(null, "ConteneurBox ConteneurButton", null)
         DivBoxConstruire.onclick = this.ClickOnConstructTrack.bind(this)
@@ -33,7 +33,7 @@ class ViewAddPostChoice {
         const DivImageCreate = NanoXBuild.DivFlexColumn(null, null, "width: 18%; height: 12vh;")
         DivImageCreate.innerHTML = IconModule.CreateFileMonitor()
         DivBoxConstruire.appendChild(DivImageCreate)
-        DivBoxConstruire.appendChild(NanoXBuild.DivText("Dessiner votre parcours manuellement", null, "Text", "width: 80%;"))
+        DivBoxConstruire.appendChild(NanoXBuild.DivText("Dessiner votre route manuellement", null, "Text", "width: 80%;"))
 
         // Log serveur load module Blog
         NanoXApiPostLog("Load view Add post choice")

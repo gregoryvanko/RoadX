@@ -73,7 +73,6 @@ class ViewAddPostFile {
             let DivContDesc = NanoXBuild.Div("DivContDesc", "DivContentEdit")
             DivContDesc.innerText = this._TraceDescription
             DivContDesc.contentEditable = "True"
-            DivContDesc.style.fontSize = "1rem"
             DivDescription.appendChild(DivContDesc)
             // Date
             Conteneur.appendChild(this.BuildEmptySpace("1rem"))

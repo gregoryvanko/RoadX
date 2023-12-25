@@ -7,13 +7,12 @@ const GeoJsonCalculateTrackLength = require("./HelperGeoJson").GeoJsonCalculateT
 const GeoJsonGetElevationOftrack = require("./HelperGeoJson").GeoJsonGetElevationOftrack
 
 async function GetBlockOfPosts (BlockNumberOfPostToLoad, res, User = null){
-    //let Reponse = [{Name:"Titre de mon premier post", Date:"26/11/2023", Description:"Chouette rando"},{Name:"Titre de mon second post", Date:"27/11/2023", Description:""}]
     let Reponse = []
     
     const NumberOfItem = 10
     const cursor = NumberOfItem * BlockNumberOfPostToLoad
     const query = {Owner: User.User}
-    const projection ={ Name:1, Date:1, Description:1, Image:1} 
+    const projection ={ Name:1, Date:1, Description:1, Image:1, Length:1, InfoElevation:1, Owner:1} 
 
     ModelPost.find(query, projection, (err, result) => {
         if (err) {
@@ -71,7 +70,6 @@ async function AddModifyPost(TrackPost, res, User = null){
         }
     }
 }
-
 
 module.exports.GetBlockOfPosts = GetBlockOfPosts
 module.exports.AddModifyPost = AddModifyPost

@@ -37,13 +37,33 @@
 .ConteneurInfo{
     margin: 0.4rem 0.4rem 0.4rem 0.8rem;
 }
-.PostInfo {
-    font-size: 0.8rem;
-    color: rgb(109, 109, 120);
+.PostInfoTextColor {
+    color: rgb(77, 77, 80);
 }
 .PostImg{
     width: 100%;
     border-radius: 0.4rem;
+}
+
+.DivPostData{
+    left: 0.6rem;
+    bottom: 0.9rem;
+}
+
+.DivPostDataInfo{
+    float: left;
+    width: 4rem;
+    text-align: center;
+}
+
+.DivBlackTransparent{
+    position:  absolute;
+    z-index: 998;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 0.4rem;
+    overflow: hidden;
+    padding: 0.2rem;
+    color: white;
 }
 
 @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait),
