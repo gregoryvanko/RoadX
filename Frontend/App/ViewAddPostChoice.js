@@ -48,7 +48,8 @@ class ViewAddPostChoice {
         // Show name in menu bar
         NanoXShowNameInMenuBar(false)
         // Menu bar on top
-        //NanoXSetMenuBarOnTop(false)
+        NanoXSetMenuBarOnTop(false)
+
         // clear menu button left
         NanoXClearMenuButtonLeft()
         // clear menu button right

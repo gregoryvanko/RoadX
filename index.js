@@ -20,7 +20,7 @@ async function Start({Port = 9000, Name = "RoadX",  Debug = false, SplashScreenF
             ShowMenuBar: true,
             MenuBarIstransparent: true,
             MenuBarOnTop: false,
-            ShowNameInMenuBar: true,
+            ShowNameInMenuBar: false,
             //CssClassForName: "TestClassName",
             ColorMenuBar: "white",
             ColorIconMenuBar: "black",
