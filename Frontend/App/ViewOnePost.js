@@ -1,9 +1,9 @@
 class ViewOnePost{
     constructor(PostId = null, GoBackView = null){
+        this._PostId = PostId
         this._GoBackView = GoBackView
         this._DivApp = NanoXGetDivApp()
         this._TextWaiting = NanoXBuild.DivText("Loading Post Data...", "textwaiting", null, "margin-top:2rem;")
-        this._PostId = PostId
     }
 
     /**
@@ -46,6 +46,10 @@ class ViewOnePost{
         }
     }
 
+    /**
+     * Get post Data
+     * @param {String} PostId ID of post
+     */
     GetPostData(PostId){
         // Get post data
         NanoXApiGet("/post/" + PostId).then((reponse)=>{  
@@ -57,6 +61,10 @@ class ViewOnePost{
         })
     }
 
+    /**
+     * Load view of data for one post
+     * @param {Object} PostData Data of one post
+     */
     LoadViewOnePost(PostData){
         // Clear view
         this._DivApp.innerHTML=""
