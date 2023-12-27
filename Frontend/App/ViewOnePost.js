@@ -4,12 +4,6 @@ class ViewOnePost{
         this._DivApp = NanoXGetDivApp()
         this._TextWaiting = NanoXBuild.DivText("Loading Post Data...", "textwaiting", null, "margin-top:2rem;")
         this._PostId = PostId
-        this._PostDate = null
-        this._PostDescription = null
-        this._PostInfoElevation = null
-        this._PostLength = null
-        this._PostName = null
-        this._PostOwner = null
     }
 
     /**
