@@ -4,6 +4,7 @@ const LogStatApi = require("@gregvanko/nanox").NanoXLogStatApi
 const LogError = require("@gregvanko/nanox").NanoXLogError
 
 const GetBlockOfPosts = require("./HelperPost").GetBlockOfPosts
+const GetPostData = require("./HelperPost").GetPostData
 const AddModifyPost = require("./HelperPost").AddModifyPost
 
 // Get Last post by block
@@ -12,6 +13,12 @@ router.get("/lastposts/:BlockNumberOfPostToLoad", AuthBasic, (req, res) => {
     if(req.params.BlockNumberOfPostToLoad == 0){
         LogStatApi("post/lastposts", "get", req.user)
     }
+})
+
+// Get Post Data
+router.get("/:PostId", AuthBasic, (req, res) => {
+    GetPostData(req.params.PostId, res, req.user)
+    LogStatApi("post/", "get", req.user)
 })
 
 // Add one post
@@ -24,7 +31,7 @@ router.post("/add", AuthBasic, async (req, res) => {
         res.status(500).send(TheError)
         LogError(TheError, req.user)
     }
-    LogStatApi("post", "post", req.user)
+    LogStatApi("post/add", "post", req.user)
 })
 
 module.exports = router

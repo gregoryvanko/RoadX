@@ -53,6 +53,21 @@ class ViewOnePost{
     }
 
     GetPostData(PostId){
-        // ToDo
+        // Get post data
+        NanoXApiGet("/post/" + PostId).then((reponse)=>{  
+            this.LoadViewOnePost(reponse) 
+            // Log serveur load view one post
+            NanoXApiPostLog("Load view one post data: " + reponse.Name)         
+        },(erreur)=>{
+            this._DivApp.innerHTML = erreur
+        })
+    }
+
+    LoadViewOnePost(PostData){
+        // Clear view
+        this._DivApp.innerHTML=""
+
+        // Todo
+        console.log(PostData)
     }
 }

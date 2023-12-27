@@ -6,6 +6,7 @@ const GeoJsonMultiLineToOneLine = require("./HelperGeoJson").GeoJsonMultiLineToO
 const GeoJsonCalculateTrackLength = require("./HelperGeoJson").GeoJsonCalculateTrackLength
 const GeoJsonGetElevationOftrack = require("./HelperGeoJson").GeoJsonGetElevationOftrack
 
+// Get One Block of Posts data for list of post view
 async function GetBlockOfPosts (BlockNumberOfPostToLoad, res, User = null){
     let Reponse = []
     
@@ -27,6 +28,26 @@ async function GetBlockOfPosts (BlockNumberOfPostToLoad, res, User = null){
     }).limit(NumberOfItem).skip(cursor).sort({Date: -1})
 }
 
+// Get data of one post
+async function GetPostData(PostId, res, User=null){
+    const Projection = { Image: 0}
+    ModelPost.findById(PostId, Projection, (err, result) => {
+        if (err) {
+            res.status(500).send(err)
+            LogError(`GetPostData db error: ${err}`, User)
+        } else {
+            if (result != null){
+                res.status(200).send(result) 
+            } else {
+                let errormsg = "Track Id not found"
+                res.status(500).send(errormsg)
+                LogError(`GetPostData error: ${errormsg}`, User)
+            }
+        }
+    })
+}
+
+// Add or modify data of one post
 async function AddModifyPost(TrackPost, res, User = null){
     const GeoJson = GeoJsonMultiLineToOneLine(TrackPost.GeoJson)
     const Length = GeoJsonCalculateTrackLength(GeoJson)
@@ -72,4 +93,5 @@ async function AddModifyPost(TrackPost, res, User = null){
 }
 
 module.exports.GetBlockOfPosts = GetBlockOfPosts
+module.exports.GetPostData = GetPostData
 module.exports.AddModifyPost = AddModifyPost
