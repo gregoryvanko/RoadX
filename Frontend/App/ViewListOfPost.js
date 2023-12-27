@@ -32,7 +32,7 @@ class ViewListOfPost {
         // Build Menu Button
         this.BuildMenuBar()
         // Add titre
-        this._DivApp.appendChild(NanoXBuild.DivText("RoadX", null, "Titre"))
+        this._DivApp.appendChild(NanoXBuild.DivText(NanoXGetAppName(), null, "Titre"))
         // Add conteneur list of post
         this._DivApp.appendChild(this._ConteneurListOfPost)
         // Waiting text
@@ -76,7 +76,9 @@ class ViewListOfPost {
                 // Add posts without next
                 reponse.forEach(Post => {
                     // Add Past
-                    this._ConteneurListOfPost.appendChild(ClassPost.Render(Post))
+                    const Divpost = ClassPost.Render(Post)
+                    Divpost.onclick = this.ClickOnPost.bind(this, Post._id)
+                    this._ConteneurListOfPost.appendChild(Divpost)
                 });
                 // On supprime le waiting text
                 if (document.getElementById("textwaiting")){
@@ -90,6 +92,7 @@ class ViewListOfPost {
                 reponse.forEach(Post => {
                     // Add post
                     const TempPost = ClassPost.Render(Post)
+                    TempPost.onclick = this.ClickOnPost.bind(this, Post._id)
                     this._ConteneurListOfPost.appendChild(TempPost)
                     // si l'element est l'element TriggerPoint
                     if (Currentpoint == TriggerPoint){
@@ -111,5 +114,15 @@ class ViewListOfPost {
     LoadAddView(){
         const view = new ViewAddPostChoice(this.LoadStartView.bind(this))
         view.LoadView()
+    }
+
+    /**
+     * Click on one post
+     * @param {Object} PostData Data of one post
+     */
+    ClickOnPost(PostId){
+        // Load view One Post
+        const viewonepost = new ViewOnePost(PostId, this.LoadStartView.bind(this))
+        viewonepost.LoadStartView()
     }
 }

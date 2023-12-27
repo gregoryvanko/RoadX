@@ -1,7 +1,7 @@
 class ClassPost{
     constructor(){}
 
-    static Render (PostData) { // ToDo Add click on post
+    static Render (PostData) {
         // Conteneur du post
         const conteneur = NanoXBuild.DivFlexColumn("ConteneurPost", "ConteneurPost", "")
         // Description

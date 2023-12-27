@@ -12,7 +12,7 @@ async function GetBlockOfPosts (BlockNumberOfPostToLoad, res, User = null){
     const NumberOfItem = 10
     const cursor = NumberOfItem * BlockNumberOfPostToLoad
     const query = {Owner: User.User}
-    const projection ={ Name:1, Date:1, Description:1, Image:1, Length:1, InfoElevation:1, Owner:1} 
+    const projection ={Id:1, Name:1, Date:1, Description:1, Image:1, Length:1, InfoElevation:1, Owner:1} 
 
     ModelPost.find(query, projection, (err, result) => {
         if (err) {

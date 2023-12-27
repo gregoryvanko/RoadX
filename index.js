@@ -32,7 +32,7 @@ async function Start({Port = 9000, Name = "RoadX",  Debug = false, SplashScreenF
     }
 
     // Initiation de NanoX
-    require("@gregvanko/nanox").NanoXInitiation(OptionNanoX)
+    require('@gregvanko/nanox').NanoXInitiation(OptionNanoX)
 
     // Add route Post
     require("@gregvanko/nanox").NanoXAddRoute("/post", require("./Backend/Route/RoutePost"))
@@ -56,5 +56,4 @@ function GetSplashScreen(FilePath){
         return HtmlString
     }
 }
-
 module.exports.Start = Start

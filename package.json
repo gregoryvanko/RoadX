@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/gregoryvanko/RoadX#readme",
   "dependencies": {
-    "@gregvanko/nanox": "^1.69.0",
+    "@gregvanko/nanox": "^1.2.0",
     "geolib": "^3.3.4",
     "node-hgt": "^1.2.3"
   }

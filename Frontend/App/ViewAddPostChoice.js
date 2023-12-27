@@ -57,7 +57,7 @@ class ViewAddPostChoice {
         // clear menu button setttings
         NanoXClearMenuButtonSettings()
 
-        // Button Add track
+        // Button Back
         NanoXAddMenuButtonLeft("ButtonBack", "Back", IconModule.LeftArrow(NanoXGetColorIconMenuBar()), this._GoBackView.bind())
     }
 
