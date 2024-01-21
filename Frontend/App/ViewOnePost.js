@@ -73,8 +73,13 @@ class ViewOnePost{
     LoadViewOnePost(PostData){
         // Clear view
         this._DivApp.innerHTML=""
+        // Box full screen
+        let box = NanoXBuild.Div("box", "BoxFullScreen", null)
+        this._DivApp.appendChild(box)
+        // Add titre
+        box.appendChild(NanoXBuild.DivText(PostData.Name, null, "SousTitre", "height: 3rem; margin: auto; text-align: center; text-wrap: balance; display: flex; align-items: center;"))
         // Div OnePost
-        this._DivApp.appendChild(NanoXBuild.Div(this._ConteneurOnePostMap, null, "height: 100vh; width: 100%; display: block;")) 
+        box.appendChild(NanoXBuild.Div(this._ConteneurOnePostMap, null, "flex-grow : 1; margin: 0.2rem;")) 
         // Center of map
         let InitialMapData= {CenterPoint:{Lat:PostData.StartPoint.Lat, Long:PostData.StartPoint.Lng}, Zoom:8}
         // RenderMap
