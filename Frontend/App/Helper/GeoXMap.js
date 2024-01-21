@@ -155,7 +155,7 @@ class GeoXMap{
         })
     }
 
-    AddTrackOnMap(TrackId, GeoJson, FitBounds, color = null){
+    AddTrackOnMap(TrackId = "TrackId", GeoJson = null, FitBounds = true, color = null){
         let WeightTrack = this._TrackWeight
         let Thecolor = (color == null)? this._TrackColor : color
         var TrackStyle = {

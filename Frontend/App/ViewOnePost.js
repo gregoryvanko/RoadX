@@ -4,6 +4,9 @@ class ViewOnePost{
         this._GoBackView = GoBackView
         this._DivApp = NanoXGetDivApp()
         this._TextWaiting = NanoXBuild.DivText("Loading Post Data...", "textwaiting", null, "margin-top:2rem;")
+        this._ConteneurOnePostMap = "ConteneurOnePostMap"
+
+        this._MapOnePost = null
     }
 
     /**
@@ -12,6 +15,8 @@ class ViewOnePost{
     LoadStartView(){
         // Clear view
         this._DivApp.innerHTML=""
+        // Clear Data
+        this._MapOnePost = null
         // Build Menu Button
         this.BuildMenuBar()
         // Waiting text
@@ -68,6 +73,14 @@ class ViewOnePost{
     LoadViewOnePost(PostData){
         // Clear view
         this._DivApp.innerHTML=""
+        // Div OnePost
+        this._DivApp.appendChild(NanoXBuild.Div(this._ConteneurOnePostMap, null, "height: 100vh; width: 100%; display: block;")) 
+        // Center of map
+        let InitialMapData= {CenterPoint:{Lat:PostData.StartPoint.Lat, Long:PostData.StartPoint.Lng}, Zoom:8}
+        // RenderMap
+        this._MapOnePost = new GeoXMap(this._ConteneurOnePostMap,InitialMapData) 
+        this._MapOnePost.RenderMap()
+        this._MapOnePost.AddTrackOnMap(PostData._id, PostData.GeoJson, true)
 
         // Todo
         console.log(PostData)
