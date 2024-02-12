@@ -7,6 +7,7 @@ class ViewOnePost{
         this._ConteneurOnePostMap = "ConteneurOnePostMap"
 
         this._MapOnePost = null
+        this._GpsPointer = null
     }
 
     /**
@@ -86,8 +87,181 @@ class ViewOnePost{
         this._MapOnePost = new GeoXMap(this._ConteneurOnePostMap,InitialMapData) 
         this._MapOnePost.RenderMap()
         this._MapOnePost.AddTrackOnMap(PostData._id, PostData.GeoJson, true)
-
+        // Box information
+        let divinfo = NanoXBuild.Div(null, "DivBlackTransparent DivPostData", "width: 340px;")
+        box.appendChild(divinfo)
+        // Numerical data
+        divinfo.appendChild(this.RenderNumericalData(PostData))
+        // Elevation chart
+        let chartdiv = NanoXBuild.Div(null, null, "height: 16vh; width: 100%; margin-top: 0.2rem;")
+        let canvas = document.createElement("canvas")
+        canvas.setAttribute("id", "myChart")
+        canvas.addEventListener ("mouseout", this.CanvansMouseOutEvent.bind(this), false);
+        canvas.addEventListener('touchend', function (event) {
+            if (event.target && event.target.tagName.toLowerCase() === "canvas") {
+              canvas.dispatchEvent(new Event('mouseout'));
+            }
+        });
+        chartdiv.appendChild(canvas)
+        divinfo.appendChild(chartdiv)
+        this.RenderElevationGraph(PostData)
+        
+        // More information
         // Todo
         console.log(PostData)
+    }
+
+    /**
+     * Render all numerial data of post
+     * @param {Object} PostData Data of one post
+     */
+    RenderNumericalData(PostData){
+        // Box numerical data
+        let divdatanumeric = NanoXBuild.Div(null, null, "display: flex; flex-direction: row; justify-content: center; align-content: center; align-items: center; lex-wrap: wrap;")
+        // info : Distance
+        let DivDistData = NanoXBuild.Div(null, "DivPostDataInfo TextSmallSmall", "")
+        divdatanumeric.appendChild(DivDistData)
+        let DivDist = NanoXBuild.DivText("Distance", null, "", null)
+        DivDistData.appendChild(DivDist)
+        let DivDistVal = NanoXBuild.DivText(PostData.Length.toFixed(1) + " Km", null, "", "margin-top:0.2rem")
+        DivDistData.appendChild(DivDistVal)
+        let DivCumulPData = NanoXBuild.Div(null, "DivPostDataInfo TextSmallSmall", "")
+        divdatanumeric.appendChild(DivCumulPData)
+        let DivCumulP = NanoXBuild.DivText("Cumul +", null, "", null)
+        DivCumulPData.appendChild(DivCumulP)
+        let DivCumulPVal = NanoXBuild.DivText(PostData.InfoElevation.ElevCumulP + " m", null, "", "margin-top:0.2rem")
+        DivCumulPData.appendChild(DivCumulPVal)
+        // Data cumulM
+        let DivCumulMData = NanoXBuild.Div(null, "DivPostDataInfo TextSmallSmall", "")
+        divdatanumeric.appendChild(DivCumulMData)
+        let DivCumulM = NanoXBuild.DivText("Cumul -", null, "", null)
+        DivCumulMData.appendChild(DivCumulM)
+        let DivCumulMVal = NanoXBuild.DivText(PostData.InfoElevation.ElevCumulM + " m", null, "", "margin-top:0.2rem")
+        DivCumulMData.appendChild(DivCumulMVal)
+        return divdatanumeric
+    }
+
+    /**
+     * Render elevation graph of post
+     * @param {Object} PostData Data of one post
+     */
+    RenderElevationGraph(PostData){
+        let me = this
+        let ctx = document.getElementById('myChart').getContext('2d')
+        Chart.plugins.register ( {
+            afterDatasetsDraw: function(chart) {
+                let chart_type = chart.config.type;
+                if (chart.tooltip._active && chart.tooltip._active.length && chart_type === 'scatter') {
+                    let activePoint = chart.tooltip._active[0],
+                    ctx = chart.chart.ctx,
+                    x_axis = chart.scales['x-axis-1'],
+                    y_axis = chart.scales['y-axis-1'],
+                    x = activePoint.tooltipPosition().x,
+                    topY = y_axis.top,
+                    bottomY = y_axis.bottom;
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(x, topY+1);
+                    ctx.lineTo(x, bottomY+1);
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = 'red';
+                    ctx.stroke();
+                    ctx.restore();
+           }
+        }
+        });
+        this._scatterChart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    data: PostData.Elevation,
+                    showLine: true,
+                    fill: false,
+                    borderColor: 'white',
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                animation: false,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom',
+                    display: false
+                },
+                tooltips: {
+                    intersect: false,
+                    mode: 'x-axis',
+                    custom: function(tooltip) {
+                        if (!tooltip) return;
+                        // disable displaying the color box;
+                        tooltip.displayColors = false;
+                    },
+                    callbacks: {
+                      label: function(tooltipItem, data) {
+                          me.DrawElevationPoint(PostData.Elevation[tooltipItem.index])
+                          let x = "Distance: " + tooltipItem.label + "m"
+                          let multistringText = [x]
+                          let y = "Elevation: " + tooltipItem.value + "m"
+                          multistringText.push(y);
+                          return multistringText;
+                      },
+                      title: function(tooltipItem, data) {
+                        return;
+                      }
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom',
+                        ticks: {
+                            beginAtZero: true,
+                            fontColor: "white",
+                            callback: function(value, index, values) {
+                                if (value >= 1000){
+                                    return  value / 1000 + " Km"
+                                } else {
+                                    return value + ' m'
+                                }
+                            }
+                        },
+                        gridLines: {
+                            zeroLineColor: 'white',
+                            color: "white",
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            fontColor: "white",
+                            stepSize: 10,
+                            callback: function(value, index, values) {
+                                return value + ' m'
+                            }
+                        },
+                        gridLines: {
+                            zeroLineColor: 'white',
+                            color: "white",
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    CanvansMouseOutEvent(){
+        if (this._GpsPointer){
+            let map = this._MapOnePost.Map
+            map.removeLayer(this._GpsPointer)
+            this._GpsPointer = null
+        }
+    }
+
+    DrawElevationPoint(ElevationPoint){
+        let latlng = [ElevationPoint.coord.lat, ElevationPoint.coord.long]
+        if (this._GpsPointer == null){
+            let map = this._MapOnePost.Map
+            this._GpsPointer = L.circleMarker([50.709446,4.543413], {radius: 8, weight:4,color: 'white', fillColor:'red', fillOpacity:1}).addTo(map)
+        }
+        this._GpsPointer.setLatLng(latlng)
     }
 }
