@@ -4,7 +4,10 @@ class ViewOnePost{
         this._GoBackView = GoBackView
         this._DivApp = NanoXGetDivApp()
         this._TextWaiting = NanoXBuild.DivText("Loading Post Data...", "textwaiting", null, "margin-top:2rem;")
-        this._ConteneurOnePostMap = "ConteneurOnePostMap"
+
+        this._IdConteneurOnePostMap = "IdConteneurOnePostMap"
+        this._IdMoreInfoData = "IdMoreInfoData"
+        this._IdButtonMoreInfo = "IdButtonMoreInfo"
 
         this._MapOnePost = null
         this._GpsPointer = null
@@ -77,14 +80,13 @@ class ViewOnePost{
         // Box full screen
         let box = NanoXBuild.Div("box", "BoxFullScreen", null)
         this._DivApp.appendChild(box)
-        // Add titre
+        // Titre
         box.appendChild(NanoXBuild.DivText(PostData.Name, null, "SousTitre", "height: 3rem; margin: auto; text-align: center; text-wrap: balance; display: flex; align-items: center;"))
         // Div OnePost
-        box.appendChild(NanoXBuild.Div(this._ConteneurOnePostMap, null, "flex-grow : 1; margin: 0.2rem;")) 
-        // Center of map
-        let InitialMapData= {CenterPoint:{Lat:PostData.StartPoint.Lat, Long:PostData.StartPoint.Lng}, Zoom:8}
+        box.appendChild(NanoXBuild.Div(this._IdConteneurOnePostMap, null, "flex-grow : 1; margin: 0.2rem;")) 
         // RenderMap
-        this._MapOnePost = new GeoXMap(this._ConteneurOnePostMap,InitialMapData) 
+        let InitialMapData= {CenterPoint:{Lat:PostData.StartPoint.Lat, Long:PostData.StartPoint.Lng}, Zoom:8}
+        this._MapOnePost = new GeoXMap(this._IdConteneurOnePostMap,InitialMapData) 
         this._MapOnePost.RenderMap()
         this._MapOnePost.AddTrackOnMap(PostData._id, PostData.GeoJson, true)
         // Box information
@@ -92,22 +94,15 @@ class ViewOnePost{
         box.appendChild(divinfo)
         // Numerical data
         divinfo.appendChild(this.RenderNumericalData(PostData))
+        // More info data
+        divinfo.appendChild(this.RenderMoreInfoData(PostData))
+        // Add More information Button
+        divinfo.appendChild(this.AddButtonMoreInfo())
         // Elevation chart
-        let chartdiv = NanoXBuild.Div(null, null, "height: 16vh; width: 100%; margin-top: 0.2rem;")
-        let canvas = document.createElement("canvas")
-        canvas.setAttribute("id", "myChart")
-        canvas.addEventListener ("mouseout", this.CanvansMouseOutEvent.bind(this), false);
-        canvas.addEventListener('touchend', function (event) {
-            if (event.target && event.target.tagName.toLowerCase() === "canvas") {
-              canvas.dispatchEvent(new Event('mouseout'));
-            }
-        });
-        chartdiv.appendChild(canvas)
-        divinfo.appendChild(chartdiv)
+        divinfo.appendChild(this.AddElevationGraph())
         this.RenderElevationGraph(PostData)
         
-        // More information
-        // Todo
+
         console.log(PostData)
     }
 
@@ -119,26 +114,44 @@ class ViewOnePost{
         // Box numerical data
         let divdatanumeric = NanoXBuild.Div(null, null, "display: flex; flex-direction: row; justify-content: center; align-content: center; align-items: center; lex-wrap: wrap;")
         // info : Distance
-        let DivDistData = NanoXBuild.Div(null, "DivPostDataInfo TextSmallSmall", "")
+        let DivDistData = NanoXBuild.Div(null, "DivPostDataInfo TextSmall", "")
         divdatanumeric.appendChild(DivDistData)
         let DivDist = NanoXBuild.DivText("Distance", null, "", null)
         DivDistData.appendChild(DivDist)
         let DivDistVal = NanoXBuild.DivText(PostData.Length.toFixed(1) + " Km", null, "", "margin-top:0.2rem")
         DivDistData.appendChild(DivDistVal)
-        let DivCumulPData = NanoXBuild.Div(null, "DivPostDataInfo TextSmallSmall", "")
+        let DivCumulPData = NanoXBuild.Div(null, "DivPostDataInfo TextSmall", "")
         divdatanumeric.appendChild(DivCumulPData)
         let DivCumulP = NanoXBuild.DivText("Cumul +", null, "", null)
         DivCumulPData.appendChild(DivCumulP)
         let DivCumulPVal = NanoXBuild.DivText(PostData.InfoElevation.ElevCumulP + " m", null, "", "margin-top:0.2rem")
         DivCumulPData.appendChild(DivCumulPVal)
         // Data cumulM
-        let DivCumulMData = NanoXBuild.Div(null, "DivPostDataInfo TextSmallSmall", "")
+        let DivCumulMData = NanoXBuild.Div(null, "DivPostDataInfo TextSmall", "")
         divdatanumeric.appendChild(DivCumulMData)
         let DivCumulM = NanoXBuild.DivText("Cumul -", null, "", null)
         DivCumulMData.appendChild(DivCumulM)
         let DivCumulMVal = NanoXBuild.DivText(PostData.InfoElevation.ElevCumulM + " m", null, "", "margin-top:0.2rem")
         DivCumulMData.appendChild(DivCumulMVal)
         return divdatanumeric
+    }
+
+    /**
+     * Build div and canvas for chart
+     * @returns Div of the chart
+     */
+    AddElevationGraph(){
+        let chartdiv = NanoXBuild.Div(null, null, "height: 16vh; width: 100%; margin-top: 0.2rem;")
+        let canvas = document.createElement("canvas")
+        canvas.setAttribute("id", "myChart")
+        canvas.addEventListener ("mouseout", this.CanvansMouseOutEvent.bind(this), false);
+        canvas.addEventListener('touchend', function (event) {
+            if (event.target && event.target.tagName.toLowerCase() === "canvas") {
+              canvas.dispatchEvent(new Event('mouseout'));
+            }
+        });
+        chartdiv.appendChild(canvas)
+        return chartdiv
     }
 
     /**
@@ -263,5 +276,39 @@ class ViewOnePost{
             this._GpsPointer = L.circleMarker([50.709446,4.543413], {radius: 8, weight:4,color: 'white', fillColor:'red', fillOpacity:1}).addTo(map)
         }
         this._GpsPointer.setLatLng(latlng)
+    }
+
+    RenderMoreInfoData(PostData){
+        let divMoreInfo = NanoXBuild.Div(this._IdMoreInfoData, "TextSmall", "width: 100%; padding: 0 0.5rem; display: none;")
+        // Div date and user
+        let DivInfo1 = NanoXBuild.DivFlexRowSpaceBetween(null, null, "width: 100%;")
+        divMoreInfo.appendChild(DivInfo1)
+        DivInfo1.appendChild(NanoXBuild.DivText(new Date(PostData.Date).toLocaleDateString()))
+        DivInfo1.appendChild(NanoXBuild.DivText(PostData.Owner))
+        // Div Comment
+        let DivInfo2 = NanoXBuild.DivFlexRowSpaceBetween(null, null, "width: 100%; margin-top: 0.2rem;")
+        divMoreInfo.appendChild(DivInfo2)
+        DivInfo2.appendChild(NanoXBuild.DivText(PostData.Description))
+        return divMoreInfo
+    }
+
+    AddButtonMoreInfo(){
+        let divbutton = NanoXBuild.Div(this._IdButtonMoreInfo, "Buttoninformation", null)
+        divbutton.innerHTML = IconModule.Information("white")
+        divbutton.onclick = this.ClickOnButtonMoreInfo.bind(this)
+        return divbutton
+    }
+
+    ClickOnButtonMoreInfo(){
+        let div = document.getElementById(this._IdMoreInfoData)
+        if (div){
+            if (div.style.display == "none"){
+                div.style.display = "block"
+                document.getElementById(this._IdButtonMoreInfo).innerHTML = "X"
+            } else {
+                div.style.display = "none"
+                document.getElementById(this._IdButtonMoreInfo).innerHTML = IconModule.Information("white")
+            }
+        }
     }
 }
